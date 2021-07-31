@@ -1,8 +1,11 @@
+import asyncio
 import logging
 import msvcrt
 import os
 import time
 
+import aiohttp
+import pysmartthings
 import win32file
 
 
@@ -40,14 +43,26 @@ def main():
 
 
 def process_line(line):
-    if 'Start Actionphase!' in line:
+    if 'DisplayActionphase' in line:
         set_light_color("red")
     if 'Actionphase ended!' in line:
         set_light_color("blue")
 
 
 def set_light_color(color: str):
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(_set_light_color(color))
+
+
+async def _set_light_color(color: str):
     logging.info("Setting color to %s", color)
+    token = os.environ['TOKEN']
+    async with aiohttp.ClientSession() as session:
+        api = pysmartthings.SmartThings(session, token)
+        devices = await api.devices()
+        for device in devices:
+            pass
+            # print("{}: {}".format(device.device_id, device.label))
 
 
 if __name__ == '__main__':
