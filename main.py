@@ -1,5 +1,9 @@
 import logging
+import msvcrt
+import os
 import time
+
+import win32file
 
 
 def main():
@@ -8,7 +12,16 @@ def main():
 
     log_file_name = r"C:\Program Files (x86)\Steam\steamapps\common\Interplanetary Enhanced " \
                     r"Edition\Interplanetary_Data\output_log.txt"
-    file = open(log_file_name, 'r')
+
+    file_handle = win32file.CreateFile(
+        log_file_name, win32file.GENERIC_READ,
+        win32file.FILE_SHARE_DELETE | win32file.FILE_SHARE_READ | win32file.FILE_SHARE_WRITE,
+        None,
+        win32file.OPEN_EXISTING,
+        win32file.FILE_ATTRIBUTE_NORMAL,
+        None
+    )
+    file = os.fdopen(msvcrt.open_osfhandle(int(file_handle), os.O_RDONLY))
     pos = file.tell()
 
     while True:
