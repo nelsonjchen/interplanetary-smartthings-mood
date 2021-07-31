@@ -4,7 +4,7 @@ import time
 
 def main():
     init_complete = False
-    setLightColor("blue")
+    set_light_color("blue")
 
     log_file_name = r"C:\Program Files (x86)\Steam\steamapps\common\Interplanetary Enhanced " \
                     r"Edition\Interplanetary_Data\output_log.txt"
@@ -28,12 +28,12 @@ def main():
 
 def process_line(line):
     if 'Start Actionphase!' in line:
-        setLightColor("red")
+        set_light_color("red")
     if 'Actionphase ended!' in line:
-        setLightColor("blue")
+        set_light_color("blue")
 
 
-def setLightColor(color: str):
+def set_light_color(color: str):
     logging.info("Setting color to %s", color)
 
 
