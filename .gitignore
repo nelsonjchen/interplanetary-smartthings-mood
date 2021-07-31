@@ -140,3 +140,5 @@ cython_debug/
 
 # IntelliJ
 .idea/
+
+personal.md
