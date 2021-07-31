@@ -1,35 +1,45 @@
 import logging
-import sys
 import time
-from enum import Enum, auto
-from watchdog.observers import Observer
-from watchdog.events import LoggingEventHandler
-
-
-class LogLineEvent(Enum):
-    UnmatchedLine = auto()
-    ActionPhaseStartLine = auto()
-    ActionPhaseEndLine = auto()
 
 
 def main():
+    init_complete = False
+    setLightColor("blue")
+
     log_file_name = r"C:\Program Files (x86)\Steam\steamapps\common\Interplanetary Enhanced " \
-                    r"Edition\Interplanetary_Data"
-    logging.basicConfig(level=logging.INFO,
-                        format='%(asctime)s - %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
-    path = log_file_name
-    event_handler = LoggingEventHandler()
-    observer = Observer()
-    observer.schedule(event_handler, path)
-    observer.start()
-    try:
-        while True:
+                    r"Edition\Interplanetary_Data\output_log.txt"
+    file = open(log_file_name, 'r')
+    pos = file.tell()
+
+    while True:
+        li = file.readline()
+        new_pos = file.tell()
+        if new_pos == pos:  # stream position hasn't changed -> EOF
+            # continue
             time.sleep(1)
-    finally:
-        observer.stop()
-        observer.join()
+            if not init_complete:
+                logging.info("Initializing complete")
+                init_complete = True
+        else:
+            pos = new_pos
+            if init_complete:
+                process_line(li)
+
+
+def process_line(line):
+    if 'Start Actionphase!' in line:
+        setLightColor("red")
+    if 'Actionphase ended!' in line:
+        setLightColor("blue")
+
+
+def setLightColor(color: str):
+    logging.info("Setting color to %s", color)
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO,
+                        format='%(asctime)s - %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S')
+
     main()
