@@ -7,6 +7,7 @@ import time
 import aiohttp
 import pysmartthings
 import win32file
+from pysmartthings import DeviceEntity
 
 
 def main():
@@ -60,9 +61,15 @@ async def _set_light_color(color: str):
     async with aiohttp.ClientSession() as session:
         api = pysmartthings.SmartThings(session, token)
         devices = await api.devices()
+        target_device: DeviceEntity
         for device in devices:
-            pass
             # print("{}: {}".format(device.device_id, device.label))
+            if 'TV Lamp' in device.label:
+                target_device = device
+        if color == "blue":
+            result = await target_device.set_level(100)
+        elif color == "red":
+            result = await target_device.set_level(0)
 
 
 if __name__ == '__main__':
