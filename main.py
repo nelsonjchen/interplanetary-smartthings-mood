@@ -68,10 +68,16 @@ async def _set_light_color(color: str):
                 if color == "blue":
                     await device.set_level(100)
                     await device.set_color(
+                        color_hex="#000000"
+                    )
+                    await device.set_color(
                         color_hex="#0000ff"
                     )
                 elif color == "red":
                     await device.set_level(100)
+                    await device.set_color(
+                        color_hex="#000000"
+                    )
                     await device.set_color(
                         color_hex="#ff0000"
                     )
