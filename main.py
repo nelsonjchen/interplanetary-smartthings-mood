@@ -3,6 +3,7 @@ import logging
 import msvcrt
 import os
 import time
+from typing import List
 
 import aiohttp
 import pysmartthings
@@ -60,16 +61,20 @@ async def _set_light_color(color: str):
     token = os.environ['TOKEN']
     async with aiohttp.ClientSession() as session:
         api = pysmartthings.SmartThings(session, token)
-        devices = await api.devices()
-        target_device: DeviceEntity
+        devices: List[DeviceEntity] = await api.devices()
         for device in devices:
             # print("{}: {}".format(device.device_id, device.label))
-            if 'TV Lamp' in device.label:
-                target_device = device
-        if color == "blue":
-            result = await target_device.set_level(100)
-        elif color == "red":
-            result = await target_device.set_level(0)
+            if 'Aeotec Light' in device.label:
+                if color == "blue":
+                    await device.set_level(100)
+                    await device.set_color(
+                        color_hex="#0000ff"
+                    )
+                elif color == "red":
+                    await device.set_level(100)
+                    await device.set_color(
+                        color_hex="#ff0000"
+                    )
 
 
 if __name__ == '__main__':
