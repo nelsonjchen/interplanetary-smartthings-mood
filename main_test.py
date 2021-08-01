@@ -11,3 +11,7 @@ def test_color_red(caplog):
 def test_color_blue(caplog):
     caplog.set_level(logging.INFO)
     set_light_color("blue")
+
+def test_color_white(caplog):
+    caplog.set_level(logging.INFO)
+    set_light_color("white")
