@@ -1,6 +1,6 @@
 # Interplanetary-Gradient
 
-*STATUS:* **WIP, haven't tuned it to the destination room yet. Just turns on a light on and off at author's place**
+*STATUS:* **tuned it to the place, that was it. it doesn't really work if you die though. oh well. that was interesting! Not really going to work actively on this anymore.**
 
 This tool is a simple example tool to watch the log of a game of [Interplanetary: Enhanced Edition][steampage] and send commands to Samsung SmartThings to control the lights in the room.
 
